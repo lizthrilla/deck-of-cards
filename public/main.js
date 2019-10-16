@@ -1,12 +1,34 @@
 
 const suits = ['hearts', 'spades', 'clubs', 'diamonds']
-const faces = ['ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King']
+const faces = [
+  { name: 'Ace', value: 1 },
+  { name: 'Two', value: 2 },
+  { name: 'Three', value: 3 },
+  { name: 'Four', value: 4 },
+  { name: 'Five', value: 5 },
+  { name: 'Six', value: 6 },
+  { name: 'Seven', value: 7 },
+  { name: 'Eight', value: 8 },
+  { name: 'Nine', value: 9 },
+  { name: 'Ten', value: 10 },
+  { name: 'Jack', value: 11 },
+  { name: 'Queen', value: 12 },
+  { name: 'King', value: 13 }
+]
 let deck = []
+
+let firstCard = {}
+let secondCard = {}
 
 const createDeck = () => {
   for (let suitIndex = 0; suitIndex < suits.length; suitIndex++) {
     for (let faceIndex = 0; faceIndex < faces.length; faceIndex++) {
-      deck.push(faces[faceIndex] + ' of ' + suits[suitIndex])
+      deck.push({
+        suit: suits[suitIndex],
+        name: faces[faceIndex].name,
+        value: faces[faceIndex].value
+      })
+      // faces[faceIndex].name + ' of ' + suits[suitIndex]
       // const listItem = document.createElement('li')
       // listItem.textContent = faces[faceIndex] + ' of ' + suits[suitIndex]
       // // listItem.textContent = deck
@@ -25,26 +47,38 @@ const randomFirstCard = () => {
   // console.log(roundedRandomIndex)
   // const card = document.createElement('p')
   // card.textContent = deck[roundedRandomIndex]
-  console.log(deck[roundedRandomIndex])
-  document.querySelector('#firstCard').textContent = deck[roundedRandomIndex]
+  firstCard = deck[roundedRandomIndex]
+  document.querySelector('#firstCard').textContent = firstCard.name + ' of ' + firstCard.suit
   // document.querySelector('.deck').appendChild(card)
 }
 
 const randomSecondCard = () => {
   const randomIndex = Math.ceil(Math.random() * 52)
-  document.querySelector('#secondCard').textContent = deck[randomIndex]
+  // sting interpolation
+  secondCard = deck[randomIndex]
+  document.querySelector('#secondCard').textContent = `${secondCard.name} of ${secondCard.suit}`
 }
 
-const thirdCard = (index) => {
-  document.querySelector('#thirdCard').textContent = deck[index]
+// const thirdCard = (index) => {
+//   document.querySelector('#thirdCard').textContent = `${deck[index].name} of ${deck[index].suit}`
+// }
+
+const compareCardValues = () => {
+  if (firstCard.value > secondCard.value) {
+    console.log(firstCard.value, secondCard.value)
+    document.querySelector('#winner').textContent = 'First card wins'
+  } else if (secondCard.value > firstCard.value) {
+    document.querySelector('#winner').textContent = 'Second card wins'
+  } else {
+    document.querySelector('#winner').textContent = 'Draw'
+  }
 }
 
 const main = () => {
   createDeck()
-  console.log(deck)
   document.querySelector('#newFirstCard').addEventListener('click', randomFirstCard)
-  document.querySelector('#newSecondCard').addEventListener('click', () => randomSecondCard())
-  document.querySelector('#newThirdCard').addEventListener('click', () => thirdCard(39))
+  document.querySelector('#newSecondCard').addEventListener('click', randomSecondCard)
+  document.querySelector('#newThirdCard').addEventListener('click', compareCardValues)
 
   // randomSecondCard()
   // for (let i = 0; i < suits.length; i++) {
